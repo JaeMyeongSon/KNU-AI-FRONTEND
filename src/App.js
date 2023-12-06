@@ -19,7 +19,7 @@ function App() {
       { x: '2023-12', y: 0 }
     ]}]);
 
-  fetch('http://localhost:8080/api/admins/users/count')
+  fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/users/count`)
       .then(data => data.json())
       .then(data => data.map(({date, count}) => ({ x: date, y: count })))
       .then(data => setUserCounts([{"id": '신규 가입자 수',
