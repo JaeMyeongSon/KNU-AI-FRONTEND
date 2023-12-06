@@ -6,7 +6,7 @@
 <h1>
 
 <a href="https://www.knu.ac.kr/wbbs/wbbs/main/main.action">
- 
+
 <img width="1280" alt="KNU LOGO - rectangle" src="https://ipc.knu.ac.kr/theme/basic/img/logo_knu.png">
 
 </a>
@@ -30,13 +30,13 @@
 
 </summary>
 
-### 멘토 
+### 멘토
 
 | <img src="https://avatars.githubusercontent.com/u/64263207?v=4" width="150px" /> |
 | :------------------------------------------------------------------------------: |
 |                      [손재명](https://github.com/JaeMyeongSon)                      |
 
-### 멘티 
+### 멘티
 
 | <img src="https://avatars.githubusercontent.com/u/94179998?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/72001106?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/23000498?v=4" width="150px" /> | <img src="https://avatars.githubusercontent.com/u/63745627?v=4" width="150px" /> |
 | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
