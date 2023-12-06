@@ -1,9 +1,11 @@
 import './App.css';
 import UserChart from "./UserChart";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import PremiumChart from "./PremiumChart";
 
 function App() {
-  const [userCounts, setUserCounts] = useState([{"id": '신규 가입자 수',
+  const [userCounts, setUserCounts] = useState([{
+    "id": '신규 가입자 수',
     "color": "hsl(130, 70%, 50%)",
     "data": [
       { x: '2023-1', y: 0 },
@@ -19,13 +21,52 @@ function App() {
       { x: '2023-12', y: 0 }
     ]}]);
 
-  fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/users/count`)
-      .then(data => data.json())
-      .then(data => data.map(({date, count}) => ({ x: date, y: count })))
-      .then(data => setUserCounts([{"id": '신규 가입자 수',
-        "color": "hsl(130, 70%, 50%)",
-        "data": data}]))
-      .catch(err => console.error(err))
+  const [premiumInfo, setPremiumInfo] = useState([
+      {
+      "id": "미가입자",
+      "label": "미가입자",
+      "value": 100,
+      "color": "hsl(251, 70%, 50%)"
+    },
+    {
+      "id": "가입자",
+      "label": "가입자",
+      "value": 100,
+      "color": "hsl(247, 70%, 50%)"
+    }
+  ]);
+
+  useEffect(() => {
+
+    fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/users/count`)
+        .then(data => data.json())
+        .then(data => data.map(({date, count}) => ({ x: date, y: count })))
+        .then(data => setUserCounts([{
+          "id": '신규 가입자 수',
+          "color": "hsl(130, 70%, 50%)",
+          "data": data
+        }]))
+        .catch(err => console.error(err));
+
+
+    fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/premium`)
+        .then(data => data.json())
+        .then(({premiumCount, userCount}) => setPremiumInfo([
+          {
+            "id": "미가입자",
+            "label": "미가입자",
+            "value": userCount,
+            "color": "hsl(251, 70%, 50%)"
+          },
+          {
+            "id": "가입자",
+            "label": "가입자",
+            "value": premiumCount,
+            "color": "hsl(247, 70%, 50%)"
+          }
+        ]))
+        .catch(err => console.error(err));
+  }, []);
 
   return (
     <div className="App">
@@ -42,7 +83,7 @@ function App() {
         <div className={"mainContainer"}>
           <h2> 프리미엄 가입자 수 </h2>
           <div style={{height: '500px'}}>
-            <UserChart data={userCounts} />
+            <PremiumChart data={premiumInfo} />
           </div>
         </div>
       </main>
