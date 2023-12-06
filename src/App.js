@@ -1,39 +1,31 @@
 import './App.css';
 import UserChart from "./UserChart";
+import {useState} from "react";
 
 function App() {
-  const data = [
-    {
-      "id": 1,
-      "color": "hsl(130, 70%, 50%)",
-      "data": [
-        {
-          "x": "2023-07",
-          "y": 284
-        },
-        {
-          "x": "2023-08",
-          "y": 96
-        },
-        {
-          "x": "2023-09",
-          "y": 76
-        },
-        {
-          "x": "2023-10",
-          "y": 229
-        },
-        {
-          "x": "2023-11",
-          "y": 240
-        },
-        {
-          "x": "2023-12",
-          "y": 204
-        }
-      ]
-    }
-  ]
+  const [userCounts, setUserCounts] = useState([{"id": '신규 가입자 수',
+    "color": "hsl(130, 70%, 50%)",
+    "data": [
+      { x: '2023-1', y: 0 },
+      { x: '2023-2', y: 0 },
+      { x: '2023-3', y: 0 },
+      { x: '2023-4', y: 0 },
+      { x: '2023-6', y: 0 },
+      { x: '2023-7', y: 0 },
+      { x: '2023-8', y: 0 },
+      { x: '2023-9', y: 0 },
+      { x: '2023-10', y: 0 },
+      { x: '2023-11', y: 0 },
+      { x: '2023-12', y: 0 }
+    ]}]);
+
+  fetch('http://localhost:8080/api/admins/users/count')
+      .then(data => data.json())
+      .then(data => data.map(({date, count}) => ({ x: date, y: count })))
+      .then(data => setUserCounts([{"id": '신규 가입자 수',
+        "color": "hsl(130, 70%, 50%)",
+        "data": data}]))
+      .catch(err => console.error(err))
 
   return (
     <div className="App">
@@ -42,15 +34,15 @@ function App() {
       </header>
       <main>
         <div className={"mainContainer"}>
-          <h2> 사용자 수 </h2>
+          <h2> 신규 가입자 수 </h2>
           <div style={{height: '500px'}}>
-            <UserChart data={data} />
+            <UserChart data={userCounts} />
           </div>
         </div>
         <div className={"mainContainer"}>
           <h2> 프리미엄 가입자 수 </h2>
           <div style={{height: '500px'}}>
-            <UserChart data={data} />
+            <UserChart data={userCounts} />
           </div>
         </div>
       </main>

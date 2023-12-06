@@ -7,12 +7,12 @@ const UserChart = ({ data }) => (
         xScale={{ type: 'point' }}
         yScale={{
           type: 'linear',
-          min: 'auto',
-          max: 'auto',
+          min: '58',
+          max: '80',
           stacked: true,
           reverse: false
         }}
-        yFormat=" >-.2f"
+        yFormat=">+.0d"
         axisTop={null}
         axisRight={null}
         axisBottom={{
