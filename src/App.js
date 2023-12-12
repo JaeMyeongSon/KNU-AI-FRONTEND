@@ -2,71 +2,37 @@ import './App.css';
 import UserChart from "./UserChart";
 import {useEffect, useState} from "react";
 import PremiumChart from "./PremiumChart";
+import {getInitLogs, getInitPremiumInfo, getInitUserCount, getLogs, getPremiumCount, getUserCount} from "./datas";
 
 function App() {
-  const [userCounts, setUserCounts] = useState([{
-    "id": '신규 가입자 수',
-    "color": "hsl(130, 70%, 50%)",
-    "data": [
-      { x: '2023-1', y: 0 },
-      { x: '2023-2', y: 0 },
-      { x: '2023-3', y: 0 },
-      { x: '2023-4', y: 0 },
-      { x: '2023-6', y: 0 },
-      { x: '2023-7', y: 0 },
-      { x: '2023-8', y: 0 },
-      { x: '2023-9', y: 0 },
-      { x: '2023-10', y: 0 },
-      { x: '2023-11', y: 0 },
-      { x: '2023-12', y: 0 }
-    ]}]);
-
-  const [premiumInfo, setPremiumInfo] = useState([
-      {
-      "id": "미가입자",
-      "label": "미가입자",
-      "value": 100,
-      "color": "hsl(251, 70%, 50%)"
-    },
-    {
-      "id": "가입자",
-      "label": "가입자",
-      "value": 100,
-      "color": "hsl(247, 70%, 50%)"
-    }
-  ]);
+  const [userCounts, setUserCounts] = useState(getInitUserCount());
+  const [premiumInfo, setPremiumInfo] = useState(getInitPremiumInfo());
+  const [page, setPage] = useState(1);
+  const [logs, setLogs] = useState(getInitLogs());
 
   useEffect(() => {
-
-    fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/users/count`)
-        .then(data => data.json())
-        .then(data => data.map(({date, count}) => ({ x: date, y: count })))
-        .then(data => setUserCounts([{
-          "id": '신규 가입자 수',
-          "color": "hsl(130, 70%, 50%)",
-          "data": data
-        }]))
+    getUserCount()
+        .then(data => setUserCounts(data))
         .catch(err => console.error(err));
 
 
-    fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/api/admins/premium`)
-        .then(data => data.json())
-        .then(({premiumCount, userCount}) => setPremiumInfo([
-          {
-            "id": "미가입자",
-            "label": "미가입자",
-            "value": userCount,
-            "color": "hsl(251, 70%, 50%)"
-          },
-          {
-            "id": "가입자",
-            "label": "가입자",
-            "value": premiumCount,
-            "color": "hsl(247, 70%, 50%)"
-          }
-        ]))
-        .catch(err => console.error(err));
+    getPremiumCount()
+        .then(data => setPremiumInfo(data))
+        .catch(err => console.log(err));
   }, []);
+
+  useEffect(() => {
+    getLogs(10, page)
+        .then(data => setLogs(data))
+        .catch(err => console.log(err));
+  }, [page]);
+
+  const startPage = Math.floor(page / 10) * 10 + 1;
+  const endPage = Math.min(startPage + 9, logs.totalPages);
+
+  const onClickPage = (clickedPage) => {
+    setPage(clickedPage);
+  }
 
   return (
     <div className="App">
@@ -84,6 +50,39 @@ function App() {
           <h2> 프리미엄 가입자 수 </h2>
           <div style={{height: '500px'}}>
             <PremiumChart data={premiumInfo} />
+          </div>
+        </div>
+        <div className={"mainContainer logContainer"}>
+          <h2> 로그 </h2>
+          <table className={"logTable"}>
+            <th> 레벨 </th>
+            <th> 메시지 </th>
+            <th> 시간 </th>
+            {
+              logs.docs.map(log =>
+                <tr className={"logElement"}>
+                  <td className={"logLevel"}> { log.level } </td>
+                  <td className={"logMessage"}> { log.message } </td>
+                  <td className={"logTimestamp"}> { log.timestamp } </td>
+                </tr>
+              )
+            }
+          </table>
+          <div className={"logNavigator"}>
+            {
+              [...Array(endPage - startPage + 1).keys()]
+                  .map(key => key + startPage)
+                  .map(key => {
+                    let className = "pageBtn";
+                    if (key === page) {
+                      className += " curPageBtn";
+                    }
+
+                    return <a
+                        className={className}
+                        onClick={() => onClickPage(key)}> {key} </a>
+                  })
+            }
           </div>
         </div>
       </main>

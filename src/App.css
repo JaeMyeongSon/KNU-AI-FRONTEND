@@ -24,3 +24,67 @@ main {
     padding: 30px 15px;
     text-align: center;
 }
+
+.logContainer {
+    grid-column: 1 / span 2;
+    padding: 0 40px;
+}
+
+.logContainer > h2 {
+    text-align: start;
+}
+
+.logTable {
+    border-collapse: collapse;
+    border-top: 2px solid #666666;
+    border-left: 0;
+    border-right: 0;
+}
+
+.logTable th {
+    color: #000000;
+    background: #EEF1F7;
+    text-align: center;
+}
+
+.logTable th, .logTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.logTable th:first-child, .logTable td:first-child {
+    border-left: 0;
+}
+
+.logTable th:last-child, .logTable td:last-child {
+    border-right: 0;
+}
+
+.logLevel{
+    text-align: center;
+}
+
+.logTimestamp{
+    text-align: center;
+}
+
+.logTable caption{caption-side: bottom; display: none;}
+
+.logNavigator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 15px;
+}
+
+.pageBtn {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0 20px;
+}
+
+.curPageBtn {
+    cursor: unset;
+    color: #888;
+}
